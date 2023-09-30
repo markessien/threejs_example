@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-// import Stats from 'three/examples/jsm/libs/stats.module'
 
 // Create Scene
 const scene = new THREE.Scene()
@@ -49,9 +48,6 @@ loader.load("Walking.fbx", function(object) {
 
 });
 
-// Add statistics widghet
-// const stats = new Stats()
-//document.body.appendChild(stats.dom)
 
 // Add animation routine
 var clock = new THREE.Clock();
@@ -62,8 +58,6 @@ function animate() {
     if (modelReady) mixer.update(clock.getDelta());
 
 	renderer.render( scene, camera );
-
-    // stats.update()
 }
 
 
