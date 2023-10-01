@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 window.addEventListener('load', function () {
     // Create Scene
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(0xffffff);
+    scene.background = null;
     scene.add(new THREE.AxesHelper(5))
 
     // Add a light
@@ -17,10 +17,11 @@ window.addEventListener('load', function () {
     const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     camera.position.set(0.8, 1.4, 1.0)
 
-    // Add renderer and put in the DOM
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+    });
     renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.setSize( 200, 200 );
 
     var container = document.getElementById( 'canvas' );
