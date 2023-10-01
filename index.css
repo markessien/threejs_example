@@ -1,10 +1,13 @@
+.container {
+    position: relative;
+}
+
 #canvas {
     width: 200px;
     height: 200px;
     border: none;
-    margin: 100px;
     padding: 0;
-    position: static; /* fixed or static */
-    top: 100px;
-    left: 100px;
+    position: absolute; /* fixed or static */
+    top: 0;
+    left: 0;
 }
