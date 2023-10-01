@@ -7,17 +7,9 @@
     "dev": "npx vite",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/isoteriksoftware/threejs_example.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/isoteriksoftware/threejs_example/issues"
-  },
-  "homepage": "https://github.com/isoteriksoftware/threejs_example#readme",
   "dependencies": {
     "three": "^0.157.0"
   },
