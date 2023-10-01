@@ -5,6 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 window.addEventListener('load', function () {
     // Create Scene
     const scene = new THREE.Scene()
+    scene.background = new THREE.Color(0xffffff);
     scene.add(new THREE.AxesHelper(5))
 
     // Add a light
