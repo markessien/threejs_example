@@ -1,0 +1,19 @@
+{
+  "name": "threejs_example",
+  "version": "1.0.0",
+  "description": "Install three using",
+  "main": "main.js",
+  "scripts": {
+    "dev": "npx vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.157.0"
+  },
+  "devDependencies": {
+    "vite": "^4.4.9"
+  }
+}
