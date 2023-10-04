@@ -40,7 +40,7 @@ window.addEventListener('load', function () {
 
     // Load our FBX model from the directory
     var loader = new FBXLoader();
-    loader.load("Walking.fbx", function(object) {
+    loader.load("/Walking.fbx", function(object) {
 
         // Scale and position the model
         object.scale.set(0.007, 0.007, 0.007)
