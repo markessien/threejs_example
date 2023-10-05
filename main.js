@@ -25,7 +25,7 @@ window.addEventListener("load", function () {
         0.1,
         1000
     );
-    camera.position.set(2, 1.4, 1.5);
+    camera.position.set(3.5, 1.4, 1.5);
 
     const renderer = new THREE.WebGLRenderer({
         antialias: true,
@@ -54,7 +54,7 @@ window.addEventListener("load", function () {
     loader.load("/Walking.fbx", function (object) {
         // Scale and position the model
         object.scale.set(0.007, 0.007, 0.007);
-        object.position.set(2, 0.5, 0);
+        object.position.set(3.5, 0.5, 0);
 
         console.log(object.animations);
         // console.log(camera.position);
