@@ -102,6 +102,7 @@ window.addEventListener("load", function () {
             iterations: 1,
             delay: 3,
             fill: "forwards",
+            easing: "cubic-bezier(0.46,0.03,0.52,0.96)",
         };
 
         canvasDiv.animate(animMovement, animTiming);
@@ -109,7 +110,7 @@ window.addEventListener("load", function () {
         // canvasDiv.style.right = `${x}px`;
         // canvasDiv.style.bottom = `${y}px`;
 
-        timerid = setTimeout(() => {
+        let timerid = setTimeout(() => {
             animationObject.rotateY(-350);
         }, 3000);
 
