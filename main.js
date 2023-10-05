@@ -3,6 +3,11 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 window.addEventListener("load", function () {
+    let data = {
+        winWidth: window.innerWidth,
+        winHeight: window.innerHeight,
+    };
+
     // Create Scene
     const scene = new THREE.Scene();
     scene.background = null;
@@ -40,6 +45,7 @@ window.addEventListener("load", function () {
     // controls.enableDamping = true;
     // controls.target.set(0, 0, 0);
 
+    var animationObject;
     var mixer;
     var modelReady = false;
 
@@ -49,7 +55,9 @@ window.addEventListener("load", function () {
         // Scale and position the model
         object.scale.set(0.007, 0.007, 0.007);
         object.position.set(2, 0.5, 0);
-        // object.rotateY(25);
+
+        console.log(object.animations);
+        // console.log(camera.position);
 
         // Start the default animation
         mixer = new THREE.AnimationMixer(object);
@@ -60,6 +68,7 @@ window.addEventListener("load", function () {
         scene.add(object);
 
         modelReady = true;
+        animationObject = object;
     });
 
     // Add animation routine
@@ -75,11 +84,58 @@ window.addEventListener("load", function () {
 
     animate();
 
-    // javascript animation .. move div:
-    // on click on btn
+    // ============= javascript animation:
+
     // a. animate .fbx object to change direction
     // b. play .fbx animation
     // c. animte div to move around
 
+    function moveCanvas(x, y) {
+        // const canvas = document.getElementById("canvas");
+        animationObject.rotateY(300);
+        let canvasDiv = document.getElementsByClassName("threeJS")[0];
+
+        const animMovement = [{ transform: `translate(-${x}px, -${y}px)` }];
+
+        const animTiming = {
+            duration: 2955,
+            iterations: 1,
+            delay: 3,
+            fill: "forwards",
+        };
+
+        canvasDiv.animate(animMovement, animTiming);
+
+        // canvasDiv.style.right = `${x}px`;
+        // canvasDiv.style.bottom = `${y}px`;
+
+        timerid = setTimeout(() => {
+            animationObject.rotateY(-350);
+        }, 3000);
+
+        console.log(animationObject.position);
+    }
+
+    function getCoordinates(event) {
+        let x = event.clientX;
+        let y = event.clientY;
+
+        x = data.winWidth - x;
+        y = data.winHeight - y;
+
+        console.log(x, y);
+        return { x, y };
+    }
+
+    let demoBtn = document.getElementById("demoBtn");
+
+    // on click on btn
+    demoBtn.addEventListener("click", (e) => {
+        let coOrds = getCoordinates(e);
+
+        moveCanvas(coOrds.x, coOrds.y);
+    });
+
+    // ToDo:
     // fix T-Posing on animation off
 });
