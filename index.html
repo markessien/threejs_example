@@ -3,29 +3,87 @@
 	<head>
 		<meta charset="utf-8">
 		<title>My first three.js app</title>
-		<style>
-			body { margin: 0; }
-		</style>
 
-    <link rel="stylesheet" href="index.css">
+		<meta name="theme-color" content="rgba(102, 42, 18, 0.4)" />
+		<meta name = "author" content = "Mukhtar B.Abdulrazaq" />
+		<meta name = "viewport" content = "width=device-width, initial-scale=1.0" />
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+		integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css"  type="text/css">
 
 	</head>
 	<body>
 		
 
-        <div class="container">
-            <h1>ThreeJS</h1>
-            
-            
+        <!-- <div class="container"> -->
+			<section class = "sect-bdy">
 
-            <button id="addCube">Button 1</button>
-            <button id="removeCube">Button 2</button>
+				<!-- header -->
+				<section class = "header-wrapper">
+					<header class = "container header">
+						<a href = "index.html" class = "d-flex align-items-center">
+							<div class = "logo mx-1">
+								<img src = "/logo-mid.png" width = "40px" alt = "logo" title = "Home" />
+							</div>
+							<h3> <span> V</span> - World</h3>
+						</a>
 
-            <div id="canvas"></div>
+						<ul class="nav justify-content-end py-2 py-sm-0">
+							<li class="nav-item">
+								<a class="nav-link active" aria-current="page" href="index.html">Home</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Products List</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Contact Us</a>
+							</li>
+						</ul>
+					</header>
+				</section>
 
-        </div>
+				<!-- ===== MAIN ===== -->
+				<main>
+					<!-- hero-section -->
+					<section class = "hero-section">
+						<div class = "row container">
+							<div class = "col-md-6 pb-4 mt-3 mb-4 d-flex justify-content-center flex-column">
+								<h1 class="display-5 fw-bold lh-1 mb-3">Networking & Security.</h1>
+								<p class="lead hero-text">Provide your businesses and homes with state of the art security & networking appliances.
+									Our goods & services are tailored to give you a hitch & stress free experience in ensuring safety.</p>
+								<p class="lead">
+									<a href="#how-we-help" class="btn btn-lg btn-primary fw-bold">Show Demo</a>
+								</p>
+							</div>
+							<div class = "col-lg-6 screen-img-container">
+								<img src = "/hero-img.jpg" alt = "V-World-tech-banner-Image" title = "v-world tech hero Image" class = "img-responsive screen-img" />
+							</div>
+						</div>
+					</section>
+
+
+					<section class="threeJS">
+						<!-- <h1 class = "mb-3">ThreeJS Demo</h1>
+
+
+
+						<button id="addCube">Button 1</button>
+						<button id="removeCube">Button 2</button> -->
+
+						<div id="canvas" class="m-3"></div>
+					</section>
+
+        <!-- </div> -->
 
         <script type="module" src="/main.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+		integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+		crossorigin="anonymous"></script>
         
 	</body>
 </html>
