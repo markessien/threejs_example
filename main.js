@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 window.addEventListener("load", function () {
     let data = {
@@ -47,29 +48,46 @@ window.addEventListener("load", function () {
 
     var animationObject;
     var mixer;
+    let idleAction;
+    let walkingAction;
+    let presentingAction;
     var modelReady = false;
 
     // Load our FBX model from the directory
     var loader = new FBXLoader();
-    loader.load("/Walking.fbx", function (object) {
-        // Scale and position the model
-        object.scale.set(0.007, 0.007, 0.007);
-        object.position.set(2.5, 0.5, 0);
+    // var loader = new GLTFLoader();
+    loader.load(
+        "/custom.fbx",
+        function (object) {
+            // Scale and position the model
+            object.scale.set(0.007, 0.007, 0.007);
+            object.position.set(2.5, 0.5, 0);
 
-        console.log(object.animations);
-        // console.log(camera.position);
+            console.log(object.animations);
+            // console.log(camera.position);
 
-        // Start the default animation
-        mixer = new THREE.AnimationMixer(object);
-        var action = mixer.clipAction(object.animations[0]);
-        action.play();
+            // Start the default animation
+            mixer = new THREE.AnimationMixer(object);
+            presentingAction = mixer.clipAction(object.animations[2]);
+            presentingAction.setLoop(THREE.LoopOnce);
+            walkingAction = mixer.clipAction(object.animations[7]);
+            idleAction = mixer.clipAction(object.animations[4]);
+            console.log(idleAction);
+            idleAction.play();
 
-        // Add it to the scene
-        scene.add(object);
+            // Add it to the scene
+            scene.add(object);
 
-        modelReady = true;
-        animationObject = object;
-    });
+            modelReady = true;
+            animationObject = object;
+        },
+        (xhr) => {
+            console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
 
     // Add animation routine
     var clock = new THREE.Clock();
@@ -93,6 +111,7 @@ window.addEventListener("load", function () {
     function moveCanvas(x, y) {
         // const canvas = document.getElementById("canvas");
         animationObject.rotateY(300);
+        walkingAction.play();
         let canvasDiv = document.getElementsByClassName("threeJS")[0];
 
         const animMovement = [{ transform: `translate(-${x}px, -${y}px)` }];
@@ -112,6 +131,8 @@ window.addEventListener("load", function () {
 
         let timerid = setTimeout(() => {
             animationObject.rotateY(-350);
+            walkingAction.stop();
+            presentingAction.play();
         }, 3000);
 
         console.log(animationObject.position);
@@ -134,7 +155,9 @@ window.addEventListener("load", function () {
     demoBtn.addEventListener("click", (e) => {
         let coOrds = getCoordinates(e);
 
+        // play walk animation
         moveCanvas(coOrds.x, coOrds.y);
+        // play present animation
     });
 
     // ToDo:
