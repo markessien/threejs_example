@@ -49,6 +49,7 @@ window.addEventListener("load", function () {
     var animationObject;
     var mixer;
     let idleAction;
+    var animationsArray = [];
     let walkingAction;
     let presentingAction;
     var modelReady = false;
@@ -57,29 +58,63 @@ window.addEventListener("load", function () {
     var loader = new FBXLoader();
     // var loader = new GLTFLoader();
     loader.load(
-        "/custom.fbx",
+        "/Idle.fbx", // main object + anim 1
         function (object) {
             // Scale and position the model
             object.scale.set(0.007, 0.007, 0.007);
             object.position.set(2.5, 0.5, 0);
 
-            console.log(object.animations);
+            // console.log(object.animations);
             // console.log(camera.position);
 
             // Start the default animation
             mixer = new THREE.AnimationMixer(object);
-            presentingAction = mixer.clipAction(object.animations[2]);
-            presentingAction.setLoop(THREE.LoopOnce);
-            walkingAction = mixer.clipAction(object.animations[7]);
-            idleAction = mixer.clipAction(object.animations[4]);
-            console.log(idleAction);
-            idleAction.play();
+            animationsArray.push(object.animations[0]);
 
             // Add it to the scene
             scene.add(object);
 
+            // load next
+            loader.load(
+                "/Walking.fbx", // anim 2
+                function (object) {
+                    animationsArray.push(object.animations[0]);
+
+                    scene.add(object);
+                },
+                (xhr) => {
+                    console.log(
+                        (xhr.loaded / xhr.total) * 100 + "% loaded animation 1"
+                    );
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+
+            // load next
+            loader.load(
+                "/Happy Hand Gesture.fbx", // anim 2
+                function (object) {
+                    animationsArray.push(object.animations[0]);
+
+                    scene.add(object);
+                },
+                (xhr) => {
+                    console.log(
+                        (xhr.loaded / xhr.total) * 100 + "% loaded animation 2"
+                    );
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+
             modelReady = true;
             animationObject = object;
+            console.log(object.animations, animationsArray);
+            let idleAction = mixer.clipAction(animationsArray[0]);
+            idleAction.play();
         },
         (xhr) => {
             console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
@@ -111,6 +146,9 @@ window.addEventListener("load", function () {
     function moveCanvas(x, y) {
         // const canvas = document.getElementById("canvas");
         animationObject.rotateY(300);
+        let walkingAction = mixer.clipAction(animationsArray[1]);
+        let presentingAction = mixer.clipAction(animationsArray[2]);
+
         walkingAction.play();
         let canvasDiv = document.getElementsByClassName("threeJS")[0];
 
@@ -129,7 +167,7 @@ window.addEventListener("load", function () {
         // canvasDiv.style.right = `${x}px`;
         // canvasDiv.style.bottom = `${y}px`;
 
-        let timerid = setTimeout(() => {
+        setTimeout(() => {
             animationObject.rotateY(-350);
             walkingAction.stop();
             presentingAction.play();
@@ -159,7 +197,4 @@ window.addEventListener("load", function () {
         moveCanvas(coOrds.x, coOrds.y);
         // play present animation
     });
-
-    // ToDo:
-    // fix T-Posing on animation off
 });
