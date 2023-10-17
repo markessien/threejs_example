@@ -58,14 +58,21 @@ window.addEventListener("load", function () {
     var loader = new FBXLoader();
     // var loader = new GLTFLoader();
     loader.load(
-        "/Idle.fbx", // main object + anim 1
+        "/idle_char_2.fbx", // main object + anim 1
         function (object) {
             // Scale and position the model
-            object.scale.set(0.007, 0.007, 0.007);
+            object.scale.set(0.01, 0.007, 0.01);
             object.position.set(2.5, 0.5, 0);
 
             // console.log(object.animations);
             // console.log(camera.position);
+
+            object.traverse((o) => {
+                if (o.isMesh) {
+                    o.castShadow = true;
+                    o.receiveShadow = true;
+                }
+            });
 
             // Start the default animation
             mixer = new THREE.AnimationMixer(object);
@@ -76,9 +83,11 @@ window.addEventListener("load", function () {
 
             // load next
             loader.load(
-                "/Walking.fbx", // anim 2
+                "/walking_char_2.fbx", // anim 2
                 function (object) {
                     animationsArray.push(object.animations[0]);
+
+                    console.log(object.animations[0]);
 
                     scene.add(object);
                 },
@@ -94,7 +103,7 @@ window.addEventListener("load", function () {
 
             // load next
             loader.load(
-                "/Happy Hand Gesture.fbx", // anim 2
+                "/arm_gesture_char_2.fbx", // anim 2
                 function (object) {
                     animationsArray.push(object.animations[0]);
 
@@ -170,6 +179,7 @@ window.addEventListener("load", function () {
         setTimeout(() => {
             animationObject.rotateY(-350);
             walkingAction.stop();
+            presentingAction.setLoop(THREE.LoopOnce);
             presentingAction.play();
         }, 3000);
 
