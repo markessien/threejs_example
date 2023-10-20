@@ -3,7 +3,7 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-window.addEventListener("load", function () {
+window.addEventListener("DOMContentLoaded", async function () {
     let data = {
         winWidth: window.innerWidth,
         winHeight: window.innerHeight,
@@ -57,9 +57,14 @@ window.addEventListener("load", function () {
     // Load our FBX model from the directory
     var loader = new FBXLoader();
     // var loader = new GLTFLoader();
-    loader.load(
-        "/idle_char_2.fbx", // main object + anim 1
-        function (object) {
+    loader
+        .loadAsync(
+            "/idle_char_2.fbx", // main object + anim 1
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+            }
+        )
+        .then((object) => {
             // Scale and position the model
             object.scale.set(0.01, 0.007, 0.01);
             object.position.set(2.5, 0.5, 0);
@@ -124,14 +129,91 @@ window.addEventListener("load", function () {
             console.log(object.animations, animationsArray);
             let idleAction = mixer.clipAction(animationsArray[0]);
             idleAction.play();
-        },
-        (xhr) => {
-            console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-        },
-        (error) => {
+        })
+        .catch((error) => {
             console.log(error);
-        }
-    );
+        })
+        .finally(() => {
+            activateSpeechBubble(speechBubble); // activate intro text
+            // setTimeout(() => {
+            //     speak(speechBubble); // activate speech with slight delay
+            // }, 2000);
+        });
+    // var doneLoading = await loader.loadAsync(
+    //     "/idle_char_2.fbx", // main object + anim 1
+    //     function (object) {
+    //         // Scale and position the model
+    //         object.scale.set(0.01, 0.007, 0.01);
+    //         object.position.set(2.5, 0.5, 0);
+
+    //         // console.log(object.animations);
+    //         // console.log(camera.position);
+
+    //         object.traverse((o) => {
+    //             if (o.isMesh) {
+    //                 o.castShadow = true;
+    //                 o.receiveShadow = true;
+    //             }
+    //         });
+
+    //         // Start the default animation
+    //         mixer = new THREE.AnimationMixer(object);
+    //         animationsArray.push(object.animations[0]);
+
+    //         // Add it to the scene
+    //         scene.add(object);
+
+    //         // load next
+    //         loader.load(
+    //             "/walking_char_2.fbx", // anim 2
+    //             function (object) {
+    //                 animationsArray.push(object.animations[0]);
+
+    //                 console.log(object.animations[0]);
+
+    //                 scene.add(object);
+    //             },
+    //             (xhr) => {
+    //                 console.log(
+    //                     (xhr.loaded / xhr.total) * 100 + "% loaded animation 1"
+    //                 );
+    //             },
+    //             (error) => {
+    //                 console.log(error);
+    //             }
+    //         );
+
+    //         // load next
+    //         loader.load(
+    //             "/arm_gesture_char_2.fbx", // anim 2
+    //             function (object) {
+    //                 animationsArray.push(object.animations[0]);
+
+    //                 scene.add(object);
+    //             },
+    //             (xhr) => {
+    //                 console.log(
+    //                     (xhr.loaded / xhr.total) * 100 + "% loaded animation 2"
+    //                 );
+    //             },
+    //             (error) => {
+    //                 console.log(error);
+    //             }
+    //         );
+
+    //         modelReady = true;
+    //         animationObject = object;
+    //         console.log(object.animations, animationsArray);
+    //         let idleAction = mixer.clipAction(animationsArray[0]);
+    //         idleAction.play();
+    //     },
+    //     (xhr) => {
+    //         console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    //     },
+    //     (error) => {
+    //         console.log(error);
+    //     }
+    // );
 
     // Add animation routine
     var clock = new THREE.Clock();
@@ -145,6 +227,53 @@ window.addEventListener("load", function () {
     }
 
     animate();
+    // activateSpeechBubble(speechBubble); // activate intro text
+
+    /* Activate and Deactivate Speech Bubbles */
+    function deActivateSpeechBubble(speechBubble) {
+        // turn display to none
+        console.log("I am to deactivate the speech bubble");
+        speechBubble.classList.replace("show", "hide");
+    }
+    let speechBubble = document.getElementsByClassName("speechBubble")[0];
+    deActivateSpeechBubble(speechBubble); // deactivate intro text
+
+    function activateSpeechBubble(speechBubble) {
+        // turn display to block
+        console.log("activating speech bubble");
+        speechBubble.classList.replace("hide", "show");
+    }
+
+    let playBtn = document.getElementsByClassName("fa-play")[0];
+    playBtn.addEventListener("click", (e) => {
+        speak(speechBubble); // activate speech with slight delay
+    });
+
+    function speak(speechBubble) {
+        // console.log("Sppech Bubble text:", text);
+        let utterance = new SpeechSynthesisUtterance();
+        utterance.text = speechBubble.innerText;
+        utterance.volume = 1;
+        utterance.voice = window.speechSynthesis.getVoices()[9];
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function setSpeechText(text) {
+        speechBubble.innerText = text;
+    }
+
+    function moveSpeechBubble(right, bottom) {
+        // set general border to 10px solid transparent + opposite of pos to 15px solid rgba(0, 0 ,0, 0.6)
+    }
+
+    function alignSpeechBubblePointer(position) {
+        // set general border to 10px solid transparent + opposite of pos to 15px solid rgba(0, 0 ,0, 0.6)
+    }
+
+    // await window.addEventListener(
+    //     "click",
+    //     deActivateSpeechBubble(speechBubble)
+    // ); // fix this
 
     // ============= javascript animation:
 
@@ -154,7 +283,7 @@ window.addEventListener("load", function () {
 
     function moveCanvas(x, y) {
         // const canvas = document.getElementById("canvas");
-        animationObject.rotateY(300);
+        animationObject.rotateY(300); // tilt animation slightly in direction of movement
         let walkingAction = mixer.clipAction(animationsArray[1]);
         let presentingAction = mixer.clipAction(animationsArray[2]);
 
@@ -177,6 +306,7 @@ window.addEventListener("load", function () {
         // canvasDiv.style.bottom = `${y}px`;
 
         setTimeout(() => {
+            // after anim, re-orient character + presentingAction
             animationObject.rotateY(-350);
             walkingAction.stop();
             presentingAction.setLoop(THREE.LoopOnce);
@@ -197,14 +327,21 @@ window.addEventListener("load", function () {
         return { x, y };
     }
 
+    // get demoBtn
     let demoBtn = document.getElementById("demoBtn");
 
-    // on click on btn
+    // on click on demoBtn
     demoBtn.addEventListener("click", (e) => {
+        deActivateSpeechBubble(speechBubble);
         let coOrds = getCoordinates(e);
 
-        // play walk animation
-        moveCanvas(coOrds.x, coOrds.y);
-        // play present animation
+        moveCanvas(coOrds.x, coOrds.y); // move canvas and play animations
+
+        // set speech text
+        newSpeechtext =
+            "On your right, my left, You can see a brief description for the hero page, along with an animation next to it.";
+        setSpeechText(newSpeechtext);
+        // in betwew=en here ..re-align, speech bubble
+        activateSpeechBubble(speechBubble);
     });
 });
